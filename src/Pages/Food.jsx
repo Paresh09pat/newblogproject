@@ -1,26 +1,33 @@
-import React, { useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import { store } from './MainDataStore'
+import fetchData from './api';
 import Card from '../Component/Card'
 import Smallcard from '../Component/Smallcard';
 
 const Food = () => {
-    const [detail] = useContext(store);
-    console.log(detail);
+    const [apidata, setData] = useState([]);
+
+  useEffect(() => {
+    const apiFetch = async () => {
+      setData(await fetchData());
+    };
+    apiFetch();
+  }, [apidata]);
+
     return (
         <div><br/><br/>
             <h1 className='bollyhead'>Food</h1>
             <h1  className='bollyhead1'>Top Posts</h1><br/>
             <div className="Bigcomponent">
                 <div className='Rightside'>
-                    {
-                        detail.filter((article) => { return article.category === "Food" }).map((n) => (
+                    {apidata &&
+                        apidata.filter((data) =>  data.category === "Food" ).map((data) => (
                             <Card
-                            key={n.id}
-                                articleid={n.id}
-                                imgUrl={n.Image}
-                                title={n.title}
-                                description={n.description.slice(0, 200)}
+                            key={data.id}
+                                articleid={data.id}
+                                imgUrl={data.Image}
+                                title={data.title}
+                                description={data.description.slice(0, 200)}
                                
                             />
                         ))
@@ -28,15 +35,13 @@ const Food = () => {
                 </div>
 
                 <div className="Leftside">
-                    {
-                        detail.filter((article) => { return article.category === "Food" }).map((n) => (
+                    {apidata &&
+                        apidata.filter((data) => data.category === "Food" ).map((data) => (
                             <Smallcard
-                            key={n.id}
-                                articleid={n.id}
-                                imgUrl={n.Image}
-                                description={n.description.slice(0, 200)}
-                                title={n.title.slice(0, 0)}
-                               
+                            key={data.id}
+                                articleid={data.id}
+                                imgUrl={data.Image}
+                                description={data.description.slice(0, 200)}  
                             />
                         ))
                     }

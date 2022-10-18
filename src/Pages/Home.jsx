@@ -1,65 +1,72 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Component/Card";
 import CardHome from "../Component/Homecard";
 import Smallcard from "../Component/Smallcard";
-import { store } from "./MainDataStore";
+import fetchData from "./api";
 
 
 const Home = () => {
-  const [detail] = useContext(store);
+  const [apidata, setData] = useState([]);
+
+  useEffect(() => {
+    const apiFetch = async () => {
+      setData(await fetchData());
+    };
+    apiFetch();
+  }, [apidata]);
   return (
     <div>
 
-       
-       <div className="Follow">
-      
-<div>
-<i className='fab fa-facebook-f' style={{ color:'white'}}></i>
-<span style={{ color:'white'}}> Facebook</span>
-</div>
 
-<div>
-<i className='fab fa-pinterest' style={{ color:'white'}}></i>
-<span style={{ color:'white'}}> Pinterest</span>
-</div>
+      <div className="Follow">
 
-<div>
-<i className='fab fa-twitter'style={{ color:'white'}}></i>
-<span style={{ color:'white'}}> Twitter</span>
-</div>
+        <div>
+          <i className='fab fa-facebook-f' style={{ color: 'white' }}></i>
+          <span style={{ color: 'white' }}> Facebook</span>
+        </div>
 
-<div>
-<i className='fa fa-envelope' style={{ color:'white'}}></i>
-<span style={{ color:'white'}}> Mail</span>
-</div>
+        <div>
+          <i className='fab fa-pinterest' style={{ color: 'white' }}></i>
+          <span style={{ color: 'white' }}> Pinterest</span>
+        </div>
 
-    </div>
-      
+        <div>
+          <i className='fab fa-twitter' style={{ color: 'white' }}></i>
+          <span style={{ color: 'white' }}> Twitter</span>
+        </div>
+
+        <div>
+          <i className='fa fa-envelope' style={{ color: 'white' }}></i>
+          <span style={{ color: 'white' }}> Mail</span>
+        </div>
+
+      </div>
+
       <div className="Home">
         <div className="Componenthome">
-          <div className="Home1"> <img className="mainpic" src="https://images.thrillophilia.com/image/upload/s--HPalFNSy--/c_fill,g_auto,h_600,q_auto,w_975/f_auto,fl_strip_profile/v1/images/photos/000/075/465/original/Khandala.jpg.jpg" alt=""/>  </div>
+          <div className="Home1"> <img className="mainpic" src="https://images.thrillophilia.com/image/upload/s--HPalFNSy--/c_fill,g_auto,h_600,q_auto,w_975/f_auto,fl_strip_profile/v1/images/photos/000/075/465/original/Khandala.jpg.jpg" alt="" />  </div>
           <div className="Homerightcom">
 
             <div className="Helicopter">
-                <img
-                  src="https://www.wallpapertip.com/wmimgs/59-599333_rohit-sharma-in-cricket-world-cup-2019-4k.jpg"
-                  alt="" />
+              <img
+                src="https://www.wallpapertip.com/wmimgs/59-599333_rohit-sharma-in-cricket-world-cup-2019-4k.jpg"
+                alt="" />
             </div>
 
             <div className="Nature">
-                <img
-                  src="https://thumbs.dreamstime.com/b/bird-s-eye-view-nainital-lake-china-peak-bird-s-eye-view-nainital-lake-china-peak-nainital-uttarakhand-india-197870237.jpg"
-                  alt=""
-                />
-             
+              <img
+                src="https://thumbs.dreamstime.com/b/bird-s-eye-view-nainital-lake-china-peak-bird-s-eye-view-nainital-lake-china-peak-nainital-uttarakhand-india-197870237.jpg"
+                alt=""
+              />
+
             </div>
           </div>
         </div>
 
-        <h1 style={{ marginTop: "40px",color: 'red',textShadow: "4px 4px 4px blue" }}>The Latest</h1>
-        
+        <h1 style={{ marginTop: "40px", color: 'red', textShadow: "4px 4px 4px blue" }}>The Latest</h1>
+
         <div className="homeleft left1 ">
-          {detail
+          {apidata
             .filter((article) => {
               return article.category === "bollywood";
             })
@@ -70,53 +77,53 @@ const Home = () => {
                 imgUrl={n.Image}
                 title={n.title}
                 description={n.description.slice(0, 200)}
-               
+
               />
             ))}
         </div>
         <div className="homeleft left1">
-          {detail
-            .filter((article) => {
-              return article.category === "technology";
-            })
-            .map((n) => (
+          {apidata
+            .filter((data) => 
+             data.category === "technology"
+            )
+            .map((data) => (
               <CardHome
-                key={n.id}
-                articleid={n.id}
-                imgUrl={n.Image}
-                title={n.title}
-                description={n.description.slice(0, 200)}
+                key={data.id}
+                articleid={data.id}
+                imgUrl={data.Image}
+                title={data.title}
+                description={data.description.slice(0, 200)}
               />
             ))}
         </div>
         <div className="homeleft left1">
-          {detail
-            .filter((article) => {
-              return article.category === "food";
-            })
-            .map((n) => (
+          {apidata
+            .filter((data) => 
+              data.category === "food"
+            )
+            .map((data) => (
               <CardHome
-                key={n.id}
-                articleid={n.id}
-                imgUrl={n.Image}
-                title={n.title}
-                description={n.description.slice(0, 200)}
-                author={n.author}
+                key={data.id}
+                articleid={data.id}
+                imgUrl={data.Image}
+                title={data.title}
+                description={data.description.slice(0, 200)}
+                author={data.author}
               />
             ))}
         </div>
-        <h1 style={{ marginTop: "40px", display: "inline-block" ,color: 'red',textShadow: "4px 4px 4px blue"}}>
+        <h1 style={{ marginTop: "40px", display: "inline-block", color: 'red', textShadow: "4px 4px 4px blue" }}>
           Latest Articles
-        </h1> <br/>
+        </h1> <br />
         <h1 className="Toppost">Top Posts</h1>
 
         <div className="Rightside2">
-          {detail
+          {apidata
             .filter((article) => {
               return article.category === "mix";
             })
             .map((n) => (
-              <Card 
+              <Card
                 key={n.id}
                 articleid={n.id}
                 imgUrl={n.Image}
@@ -126,9 +133,9 @@ const Home = () => {
               />
             ))}
         </div>
-        
+
         <div className="Leftside2">
-          {detail
+          {apidata
             .filter((article) => {
               return article.category === "mix";
             })
@@ -143,65 +150,65 @@ const Home = () => {
               />
             ))}
 
-        </div> <br/>
+        </div> <br />
 
-        <h1 style={{ marginTop: "20px", display: "inline-block",color: 'red',textShadow: "4px 4px 4px blue" }}>
+        <h1 style={{ marginTop: "20px", display: "inline-block", color: 'red', textShadow: "4px 4px 4px blue" }}>
           Latest Stories
         </h1>
-<div className="mainhomeleft">
+        <div className="mainhomeleft">
 
-<div className="homeleft">
-          {detail
-            .filter((article) => {
-              return article.category === "footer1";
-            })
-            .map((n) => (
-              <CardHome
-                key={n.id}
-                articleid={n.id}
-                imgUrl={n.Image}
-                title={n.title}
-                description={n.description.slice(0, 200)}
-                author={n.author}
-              />
-            ))}
+          <div className="homeleft">
+            {apidata
+              .filter((data) =>
+                data.category === "footer1"
+              )
+              .map((data) => (
+                <CardHome
+                  key={data.id}
+                  articleid={data.id}
+                  imgUrl={data.Image}
+                  title={data.title}
+                  description={data.description.slice(0, 200)}
+                  author={data.author}
+                />
+              ))}
+          </div>
+
+          <div className="homeleft">
+            {apidata
+              .filter((data) => 
+                data.category === "footer2"
+              )
+              .map((data) => (
+                <CardHome
+                  key={data.id}
+                  articleid={data.id}
+                  imgUrl={data.Image}
+                  title={data.title}
+                  description={data.description.slice(0, 200)}
+
+                />
+              ))}
+          </div>
+
+          <div className="homeleft">
+            {apidata
+              .filter((data) => 
+                data.category === "footer3"
+              )
+              .map((data) => (
+                <CardHome
+                  key={data.id}
+                  articleid={data.id}
+                  imgUrl={data.Image}
+                  title={data.title}
+                  description={data.description.slice(0, 200)}
+
+                />
+              ))}
+          </div>
         </div>
 
-        <div className="homeleft">
-          {detail
-            .filter((article) => {
-              return article.category === "footer2";
-            })
-            .map((n) => (
-              <CardHome
-                key={n.id}
-                articleid={n.id}
-                imgUrl={n.Image}
-                title={n.title}
-                description={n.description.slice(0, 200)}
-              
-              />
-            ))}
-        </div>
-
-        <div className="homeleft">
-          {detail
-            .filter((article) => {
-              return article.category === "footer3";
-            })
-            .map((n) => (
-              <CardHome
-                key={n.id}
-                articleid={n.id}
-                imgUrl={n.Image}
-                title={n.title}
-                description={n.description.slice(0, 200)}
-               
-              />
-            ))}
-        </div>
-</div>
-        
       </div>
     </div>
   );

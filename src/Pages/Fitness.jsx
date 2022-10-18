@@ -1,41 +1,46 @@
-import React, { useContext } from 'react'
-
-import { store } from './MainDataStore'
+import React, { useState, useEffect } from 'react'
+import fetchData from './api';
 import Card from '../Component/Card'
 import Smallcard from '../Component/Smallcard';
 
 const Fitness = () => {
-    const [detail] = useContext(store);
-    console.log(detail);
+    const [apidata, setData] = useState([]);
+    
+    useEffect(() => {
+        const apiFetch = async () => {
+          setData(await fetchData());
+        };
+        apiFetch();
+      }, [apidata]);
+
     return (
         <div><br/><br/>
             <h1  className='bollyhead'>Fitness</h1>
             <h1  className='bollyhead1'>Top Posts</h1><br/>
             <div className="Bigcomponent">
                 <div className='Rightside'>
-                    {
-                        detail.filter((article) => { return article.category === "Fitness" }).map((n) => (
+                    {apidata &&
+                        apidata.filter((data) => data.category === "Fitness" ).map((data) => (
                             <Card
-                            key={n.id}
-                                articleid={n.id}
-                                imgUrl={n.Image}
-                                title={n.title}
-                                description={n.description.slice(0, 200)}
-                              
+                            key={data.id}
+                                articleid={data.id}
+                                imgUrl={data.Image}
+                                title={data.title}
+                                description={data.description.slice(0, 200)}       
                             />
                         ))
                     }
                 </div>
 
                 <div className="Leftside">
-                    {
-                        detail.filter((article) => { return article.category === "Fitness" }).map((n) => (
+                    {apidata &&
+                        apidata.filter((data) => data.category === "Fitness" ).map((data) => (
                             <Smallcard
-                            key={n.id}
-                                articleid={n.id}
-                                imgUrl={n.Image}
-                                description={n.description.slice(0, 200)}
-                                title={n.title.slice(0, 0)}
+                            key={data.id}
+                                articleid={data.id}
+                                imgUrl={data.Image}
+                                description={data.description.slice(0, 200)}
+                                title={data.title}
                               
                             />
                         ))
